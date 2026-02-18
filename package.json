@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed:users": "node src/seed/seedUsers.js", 
+    "seed:products": "node src/seed/seedProducts.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
