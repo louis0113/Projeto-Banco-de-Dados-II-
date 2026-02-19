@@ -1,5 +1,4 @@
 import { createClient} from 'redis';
-import dotenv from "dotenv";
 
 const port = process.env.PORT_REDIS;
 const host = process.env.HOST_REDIS;

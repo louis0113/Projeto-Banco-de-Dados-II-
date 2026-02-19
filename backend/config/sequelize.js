@@ -23,6 +23,7 @@ const sequelize = new Sequelize(database, username, password, {
             ca : fs.readFileSync(pem).toString(),
         }
     },
+    logging : false,
 });
 
 export default sequelize;

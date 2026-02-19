@@ -1,15 +1,14 @@
 import express from 'express';
 import 'dotenv/config';
-import sequelize from "./src/config/sequelize.js";
-import redis from "./src/config/redis.js"
-import {uri, mongoose} from "./src/config/mongodb.js"
-import products from "./src/routes/productRoutes.js"
-import cart from "./src/routes/cartRoutes.js"
-import auth from  "./src/routes/authRoutes.js"
+import sequelize from "./config/sequelize.js";
+import redis from "./config/redis.js"
+import {uri, mongoose} from "./config/mongodb.js"
+import products from "./routes/productRoutes.js"
+import cart from "./routes/cartRoutes.js"
+import auth from  "./routes/authRoutes.js"
 
 const app = express();
 app.use(express.json());
-
 
 async function databaseConnect(callback, database){
     try{
