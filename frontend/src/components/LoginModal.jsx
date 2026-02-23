@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { X, Mail, Lock, User } from 'lucide-react';
 
 export default function LoginModal({ isOpen, onClose }) {
-  const [isRegister, setIsRegister] = useState(false); // Alterna entre Login e Cadastro
-
+  const [isRegister, setIsRegister] = useState(false);
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      {/* Overlay com desfoque */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={onClose} />
       
       <div className="relative bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl animate-in zoom-in-95 duration-300">
@@ -25,7 +23,6 @@ export default function LoginModal({ isOpen, onClose }) {
           </p>
         </div>
 
-        {/* Botão de Login com Google */}
         <button className="w-full flex items-center justify-center gap-3 border-2 border-gray-100 py-3 rounded-2xl font-bold text-gray-700 hover:bg-gray-50 transition-all mb-6">
           <img src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" className="w-5 h-5" />
           {isRegister ? 'Cadastrar com Google' : 'Entrar com Google'}
