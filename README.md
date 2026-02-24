@@ -1,18 +1,66 @@
-# React + Vite
+# 🛍️ Ecommerce - Drop 2026
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o Front-end de uma loja de roupas moderna, focado em uma experiência de usuário (UX) fluida, com design minimalista e fluxos de checkout interativos.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **React.js** (Biblioteca principal)
+* **Vite** (Build tool ultrarrápido)
+* **Tailwind CSS** (Estilização via utilitários)
+* **Lucide React** (Pacote de ícones vetoriais)
+* **Context API** (Gerenciamento de estado do carrinho)
 
-## React Compiler
+## 🛠️ Pré-requisitos
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Antes de começar, você vai precisar ter instalado em sua máquina:
+* [Node.js](https://nodejs.org/) (Versão 18 ou superior)
+* [NPM](https://www.npmjs.com/) (Geralmente vem junto com o Node)
 
-Note: This will impact Vite dev & build performances.
+## 📦 Instalação e Execução
 
-## Expanding the ESLint configuration
+1. **Abra o terminal na pasta do projeto:**
+   ```bash
+   cd frontend
+Instale as dependências:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Bash
+
+npm install
+Inicie o servidor de desenvolvimento:
+
+Bash
+
+npm run dev
+Acesse no navegador:
+O projeto estará rodando em http://localhost:5173/
+
+📋 Funcionalidades Atuais (Front-end)
+Vitrine Dinâmica: Listagem de produtos com efeito de hover.
+
+Carrinho Lateral (Drawer): Adição, remoção e cálculo de subtotal em tempo real.
+
+Sistema de Checkout:
+
+Cálculo de frete simulado (digite 8 números no CEP).
+
+Validação de campos para liberar o botão de finalizar.
+
+Tela de sucesso após a confirmação do pedido com feedback visual.
+
+Modal de Login: Interface pronta para autenticação.
+
+🔗 Estrutura de Pastas
+/src/components: Componentes visuais (Header, Checkout, Drawer, etc).
+
+/src/context: Lógica do carrinho de compras e estados globais.
+
+/src/data: Mock de produtos (JSON) para simular o banco de dados.
+
+🛠️ Próximos Passos (Integração Back-end)
+O projeto está preparado para receber integração via API nos seguintes pontos:
+
+Substituir o arquivo src/data/products.js por uma chamada GET ao banco de dados.
+
+Implementar a lógica de POST no envio do formulário de Checkout para registrar pedidos.
+
+Conectar o Modal de Login com o sistema de autenticação (JWT, Firebase ou similar).

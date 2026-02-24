@@ -6,8 +6,10 @@ import {uri, mongoose} from "./config/mongodb.js"
 import products from "./routes/productRoutes.js"
 import cart from "./routes/cartRoutes.js"
 import auth from  "./routes/authRoutes.js"
-
+import cors from 'cors'
 const app = express();
+
+app.use(cors())
 app.use(express.json());
 
 async function databaseConnect(callback, database){

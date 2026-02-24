@@ -1,25 +1,42 @@
-import React, { useState } from 'react';
+import { useState, useEffect} from 'react';
 import Header from './components/Header';
-import ProductCard from './components/ProductCard';
 import Drawer from './components/Drawer';
+import ProductCard from './components/ProductCard'
 import LoginModal from './components/LoginModal';
 import Checkout from './components/Checkout';
 import { CartProvider, useCart } from './context/CartContext';
-import { products } from './data/products';
+import axios from 'axios'
 
 function MainContent() {
   const { cartTotal } = useCart();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [filter, setFilter] = useState('Todos');
+  const [data, setData] = useState([])
+  const [error, setError] = useState(null)
 
-  const filteredProducts = filter === 'Todos' 
-    ? products 
-    : products.filter(p => p.category === filter);
+    useEffect( () => {
+    const products = async () => {
+        try{
+            const response = await axios.get('http://localhost:3000/api/products')
+            setData(response.data)
+            setError(null)
+        } catch(err){
+            setError(err.message)
+            setData([])
+        } 
+    }
+        products()
+    }, [])
+
+    if (error) return <p>Error: {error}</p>
+
+    const filteredProducts = filter === 'Todos' 
+    ?  data
+    : data.filter(p => p.category === filter);
 
   return (
-    <div className="min-h-screen bg-white font-sans text-black">
-      
+        <div className="min-h-screen bg-white font-sans text-black">
       {!showCheckout && (
         <div className="fixed top-0 w-full z-[30] px-4 pt-2">
           <div className="max-w-7xl mx-auto h-9 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-center shadow-2xl shadow-black/20 animate-in fade-in slide-in-from-top-2 duration-500">
@@ -81,7 +98,7 @@ function MainContent() {
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 animate-in fade-in slide-in-from-bottom-8 duration-1000">
               {filteredProducts.map(p => (
-                <ProductCard key={p.id} product={p} />
+                <ProductCard key={p._id} product={p} />
               ))}
             </div>
           </>
