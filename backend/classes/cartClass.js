@@ -8,7 +8,7 @@ class EcommerceCart {
     }
 
     async addItem(productId, quantity = 1, productInfo = null){
-        await redis.hIncrBy(ths.cartKey, productId, quantity);
+        await redis.hIncrBy(this.cartKey, productId, quantity);
 
         if(productInfo){
             await redis.hSet(this.metaKey, productId, JSON.stringify(productInfo))
@@ -34,7 +34,7 @@ class EcommerceCart {
     }
 
     async getAllItems(){
-        const [quantities, metadata] = await Promisse.all([
+        const [quantities, metadata] = await Promise.all([
             redis.hGetAll(this.cartKey),
             redis.hGetAll(this.metaKey)
         ]);
