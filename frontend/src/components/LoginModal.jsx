@@ -1,9 +1,37 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, User } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export default function LoginModal({ isOpen, onClose }) {
   const [isRegister, setIsRegister] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login, register } = useCart();
   if (!isOpen) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+    try {
+      if (isRegister) {
+        await register(email, password);
+      } else {
+        await login(email, password);
+      }
+      setEmail('');
+      setPassword('');
+      setFullName('');
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Falha na autenticação.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -34,26 +62,51 @@ export default function LoginModal({ isOpen, onClose }) {
           <div className="flex-grow border-t border-gray-100"></div>
         </div>
 
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {isRegister && (
             <div className="relative">
               <User className="absolute left-4 top-3.5 text-gray-400" size={18} />
-              <input type="text" placeholder="Nome Completo" className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black" />
+              <input
+                type="text"
+                placeholder="Nome Completo"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black"
+              />
             </div>
           )}
           
           <div className="relative">
             <Mail className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input type="email" placeholder="E-mail" className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black" />
+            <input
+              type="email"
+              placeholder="Usuário ou e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black"
+            />
           </div>
 
           <div className="relative">
             <Lock className="absolute left-4 top-3.5 text-gray-400" size={18} />
-            <input type="password" placeholder="Senha" className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black" />
+            <input
+              type="password"
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black"
+            />
           </div>
 
-          <button className="w-full bg-black text-white py-4 rounded-2xl font-bold mt-4 hover:shadow-lg hover:shadow-black/20 transition-all active:scale-[0.98]">
-            {isRegister ? 'FINALIZAR CADASTRO' : 'ENTRAR NA LOJA'}
+          {error && (
+            <p className="text-sm text-red-600 font-semibold">{error}</p>
+          )}
+
+          <button
+            disabled={isLoading}
+            className="w-full bg-black text-white py-4 rounded-2xl font-bold mt-4 hover:shadow-lg hover:shadow-black/20 transition-all active:scale-[0.98] disabled:opacity-60"
+          >
+            {isLoading ? 'AGUARDE...' : (isRegister ? 'FINALIZAR CADASTRO' : 'ENTRAR NA LOJA')}
           </button>
         </form>
 
@@ -61,7 +114,10 @@ export default function LoginModal({ isOpen, onClose }) {
           <p className="text-sm text-gray-500">
             {isRegister ? 'Já tem uma conta?' : 'Ainda não é membro?'}
             <button 
-              onClick={() => setIsRegister(!isRegister)} 
+              onClick={() => {
+                setIsRegister(!isRegister);
+                setError('');
+              }} 
               className="ml-2 font-black text-black underline underline-offset-4 hover:text-zinc-700"
             >
               {isRegister ? 'Fazer Login' : 'Criar conta agora'}

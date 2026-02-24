@@ -33,7 +33,7 @@ export default function Drawer({ onCheckoutClick }) {
             </div>
           ) : (
             cartItems.map(item => (
-              <div key={item.id} className="flex gap-4 border-b border-gray-50 pb-4">
+              <div key={item._id} className="flex gap-4 border-b border-gray-50 pb-4">
                 <img src={item.image} className="w-20 h-24 object-cover rounded-lg shadow-sm" alt={item.name} />
                 <div className="flex-1 flex flex-col justify-between py-1">
                   <div>
@@ -43,7 +43,7 @@ export default function Drawer({ onCheckoutClick }) {
                   <div className="flex justify-between items-end">
                     <p className="font-black text-sm text-black">R$ {item.price.toFixed(2)}</p>
                     <button 
-                      onClick={() => removeFromCart(item.id)} 
+                      onClick={() => removeFromCart(item._id)} 
                       className="text-red-400 hover:text-red-600 transition p-1"
                     >
                       <Trash2 size={18}/>
