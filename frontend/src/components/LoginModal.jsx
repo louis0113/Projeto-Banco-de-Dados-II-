@@ -2,26 +2,44 @@ import React, { useState } from 'react';
 import { X, Mail, Lock, User } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-export default function LoginModal({ isOpen, onClose }) {
+export default function LoginModal({ isOpen, onClose, onLoginSuccess }) {
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
   const { login, register } = useCart();
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
+    
     try {
+      let userData;
       if (isRegister) {
-        await register(email, password);
+        userData = await register(email, password, fullName);
       } else {
-        await login(email, password);
+        userData = await login(email, password);
       }
+
+      // LÓGICA DE TRATAMENTO DE NOME
+      // Prioridade: 1. Nome do Banco, 2. Nome do Input, 3. Nickname do Email
+      const rawName = userData?.name || fullName || email.split('@')[0];
+      
+      const formattedUser = { 
+        ...userData,
+        name: rawName.toUpperCase(), 
+        email: email 
+      };
+
+      onLoginSuccess(formattedUser); 
+      
+      // Limpa os campos
       setEmail('');
       setPassword('');
       setFullName('');
@@ -46,20 +64,6 @@ export default function LoginModal({ isOpen, onClose }) {
           <h2 className="text-4xl font-black tracking-tighter text-black">
             {isRegister ? 'CRIAR CONTA' : 'BEM-VINDO'}
           </h2>
-          <p className="text-gray-500 text-sm mt-2">
-            {isRegister ? 'Preencha seus dados para começar.' : 'Acesse sua conta para continuar.'}
-          </p>
-        </div>
-
-        <button className="w-full flex items-center justify-center gap-3 border-2 border-gray-100 py-3 rounded-2xl font-bold text-gray-700 hover:bg-gray-50 transition-all mb-6">
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" className="w-5 h-5" />
-          {isRegister ? 'Cadastrar com Google' : 'Entrar com Google'}
-        </button>
-
-        <div className="relative flex py-5 items-center">
-          <div className="flex-grow border-t border-gray-100"></div>
-          <span className="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase tracking-widest">Ou use seu e-mail</span>
-          <div className="flex-grow border-t border-gray-100"></div>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
@@ -71,7 +75,8 @@ export default function LoginModal({ isOpen, onClose }) {
                 placeholder="Nome Completo"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black"
+                className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black text-black"
+                required
               />
             </div>
           )}
@@ -83,7 +88,8 @@ export default function LoginModal({ isOpen, onClose }) {
               placeholder="Usuário ou e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black"
+              className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black text-black"
+              required
             />
           </div>
 
@@ -94,13 +100,12 @@ export default function LoginModal({ isOpen, onClose }) {
               placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black"
+              className="w-full bg-gray-50 border-none rounded-2xl pl-12 pr-4 py-3.5 outline-none focus:ring-2 focus:ring-black text-black"
+              required
             />
           </div>
 
-          {error && (
-            <p className="text-sm text-red-600 font-semibold">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-600 font-semibold">{error}</p>}
 
           <button
             disabled={isLoading}
@@ -111,20 +116,12 @@ export default function LoginModal({ isOpen, onClose }) {
         </form>
 
         <div className="text-center mt-8">
-          <p className="text-sm text-gray-500">
-            {isRegister ? 'Já tem uma conta?' : 'Ainda não é membro?'}
-            <button 
-              onClick={() => {
-                setIsRegister(!isRegister);
-                setError('');
-              }} 
-              className="ml-2 font-black text-black underline underline-offset-4 hover:text-zinc-700"
-            >
-              {isRegister ? 'Fazer Login' : 'Criar conta agora'}
-            </button>
-          </p>
+          <button onClick={() => setIsRegister(!isRegister)} className="text-sm font-black text-black underline underline-offset-4">
+            {isRegister ? 'Já tem uma conta? Fazer Login' : 'Ainda não é membro? Criar conta'}
+          </button>
         </div>
       </div>
     </div>
   );
 }
+

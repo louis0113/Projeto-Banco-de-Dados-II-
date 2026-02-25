@@ -1,66 +1,254 @@
-# 🛍️ Ecommerce - Drop 2026
+📦 Loja Roupas – E-commerce Fullstack
 
-Este é o Front-end de uma loja de roupas moderna, focado em uma experiência de usuário (UX) fluida, com design minimalista e fluxos de checkout interativos.
+🖥️ Visão Geral
 
-## 🚀 Tecnologias Utilizadas
+Aplicação fullstack de e-commerce desenvolvida com arquitetura moderna, separando Frontend e Backend, utilizando autenticação JWT, upload de imagens com AWS S3, cache com Redis e banco híbrido (MongoDB + PostgreSQL).
 
-* **React.js** (Biblioteca principal)
-* **Vite** (Build tool ultrarrápido)
-* **Tailwind CSS** (Estilização via utilitários)
-* **Lucide React** (Pacote de ícones vetoriais)
-* **Context API** (Gerenciamento de estado do carrinho)
+🚀 Tecnologias Utilizadas
 
-## 🛠️ Pré-requisitos
+🎨 Frontend
 
-Antes de começar, você vai precisar ter instalado em sua máquina:
-* [Node.js](https://nodejs.org/) (Versão 18 ou superior)
-* [NPM](https://www.npmjs.com/) (Geralmente vem junto com o Node)
+React 19
 
-## 📦 Instalação e Execução
+Vite
 
-1. **Abra o terminal na pasta do projeto:**
-   ```bash
-   cd frontend
-Instale as dependências:
+Tailwind CSS 4
 
-Bash
+React Router
+
+Axios
+
+Lucide
+
+⚙️ Backend
+
+Node.js
+
+Express 5
+
+JWT
+
+Bcrypt
+
+Sequelize
+
+Mongoose
+
+Redis
+
+Amazon S3
+
+🗄️ Banco de Dados
+
+MongoDB
+
+PostgreSQL
+
+🏗️ Arquitetura do Projeto
+
+loja-roupas/
+│
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── seed/
+│   └── server.js
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── routes/
+│   └── main.jsx
+│
+├── .env
+├── package.json
+└── vite.config.js
+
+🔐 Funcionalidades
+
+Cadastro de usuário
+
+Login com autenticação JWT
+
+Hash de senha com Bcrypt
+
+CRUD de produtos
+
+Upload de imagens via AWS S3
+
+Cache com Redis
+
+Seed automático de usuários e produtos
+
+Separação de banco relacional e não relacional
+
+🛠️ Pré-requisitos
+
+Antes de instalar, você precisa ter instalado:
+
+Node.js (v18+ recomendado)
+
+PostgreSQL
+
+MongoDB
+
+Redis
+
+Conta na Amazon Web Services para uso do S3
+
+⚙️ Instalação Passo a Passo
+
+1️⃣ Clonar o repositório
+
+git clone https://github.com/seuusuario/loja-roupas.git
+
+
+2️⃣ Instalar dependências
 
 npm install
-Inicie o servidor de desenvolvimento:
 
-Bash
+3️⃣ Criar arquivo .env
 
+Na raiz do projeto:
+
+PORT=5000
+
+# JWT
+JWT_SECRET=sua_chave_super_secreta
+
+# PostgreSQL
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASS=sua_senha
+DB_NAME=loja_roupas
+DB_PORT=5432
+
+# MongoDB
+MONGO_URI=mongodb://localhost:27017/loja_roupas
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# AWS S3
+AWS_ACCESS_KEY_ID=sua_key
+AWS_SECRET_ACCESS_KEY=sua_secret
+AWS_REGION=us-east-1
+AWS_BUCKET_NAME=nome_do_bucket
+
+4️⃣ Criar bancos de dados
+
+PostgreSQL
+CREATE DATABASE loja_roupas;
+
+MongoDB cria automaticamente ao conectar.
+
+5️⃣ Rodar Seeds
+
+npm run seed:users
+npm run seed:products
+
+▶️ Rodando o Projeto
+
+Backend
+npm run start
+
+Servidor rodando em:
+
+http://localhost:5000
+Frontend
 npm run dev
-Acesse no navegador:
-O projeto estará rodando em http://localhost:5173/
 
-📋 Funcionalidades Atuais (Front-end)
-Vitrine Dinâmica: Listagem de produtos com efeito de hover.
+Aplicação rodando em:
 
-Carrinho Lateral (Drawer): Adição, remoção e cálculo de subtotal em tempo real.
+http://localhost:5173
 
-Sistema de Checkout:
+🔄 Scripts Disponíveis
 
-Cálculo de frete simulado (digite 8 números no CEP).
+Script	Descrição
+npm run dev	Inicia frontend com Vite
+npm run build	Build de produção
+npm run preview	Preview do build
+npm run start	Inicia backend
+npm run seed:users	Popula usuários
+npm run seed:products	Popula produtos
+npm run lint	Roda ESLint
 
-Validação de campos para liberar o botão de finalizar.
+🔐 Autenticação
 
-Tela de sucesso após a confirmação do pedido com feedback visual.
+A autenticação é feita via JWT.
 
-Modal de Login: Interface pronta para autenticação.
+Fluxo:
 
-🔗 Estrutura de Pastas
-/src/components: Componentes visuais (Header, Checkout, Drawer, etc).
+Usuário faz login
 
-/src/context: Lógica do carrinho de compras e estados globais.
+Backend valida senha com Bcrypt
 
-/src/data: Mock de produtos (JSON) para simular o banco de dados.
+Token JWT é gerado
 
-🛠️ Próximos Passos (Integração Back-end)
-O projeto está preparado para receber integração via API nos seguintes pontos:
+Frontend armazena token
 
-Substituir o arquivo src/data/products.js por uma chamada GET ao banco de dados.
+Rotas protegidas usam middleware de autenticação
 
-Implementar a lógica de POST no envio do formulário de Checkout para registrar pedidos.
+📦 Integração com AWS S3
 
-Conectar o Modal de Login com o sistema de autenticação (JWT, Firebase ou similar).
+Upload de imagens de produtos
+
+Armazenamento em bucket
+
+Retorno da URL pública
+
+Salvo no banco
+
+🧠 Estratégia de Banco Híbrido
+
+Tipo de dado	Banco
+Usuários	PostgreSQL
+Produtos	MongoDB
+Sessões/cache	Redis
+
+🚀 Deploy (Recomendado)
+
+Backend:
+
+Render
+
+Railway
+
+Frontend:
+
+Vercel
+
+Netlify
+
+Banco:
+
+Supabase (Postgres)
+
+MongoDB Atlas
+
+🧪 Testes Manuais
+
+Testar Login
+POST /auth/login
+Testar Produtos
+GET /products
+POST /products
+PUT /products/:id
+DELETE /products/:id
+
+📈 Melhorias Futuras
+
+Testes automatizados
+
+CI/CD
+
+Docker
+
+Painel administrativo
+
+Pagamento (Stripe)
+
+Sistema de carrinho persistente
